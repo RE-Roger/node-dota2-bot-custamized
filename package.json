@@ -1,0 +1,21 @@
+{
+  "name": "dota2-bot",
+  "version": "2.0.0",
+  "dependencies": {
+    "steam": "^1.2.0"
+  },
+  "readmeFilename": "README.md",
+  "description": "A customized bot on the basis of node-dota2",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ZiRoger/node-dota2-bot-custamized.git"
+  },
+  "keywords": [
+    "steam",
+    "valve",
+    "dota",
+    "RogerY"
+  ],
+  "license": "MIT"
+}
