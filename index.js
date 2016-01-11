@@ -1,6 +1,7 @@
 var steam = require("steam"),
     util = require("util"),
     fs = require("fs"),
+    EventEmitter = require('events').EventEmitter,
     crypto = require("crypto"),
     dota2 = require("./node-dota2"),
     steamClient = new steam.SteamClient(),
@@ -11,11 +12,45 @@ var steam = require("steam"),
 // Load config
 global.config = require("./config");
 
+var botsArray = [{
+    botID:"",
+    botName:"",
+    botStatus:""
+}];
+
+
+function botArmy() {
+    EventEmitter.call(this);
+}
+util.inherits(botArmy, EventEmitter);
+
+var botArmy = new botArmy();
+botArmy.on('initialize', function(err,data) {
+    console.log('initialize!');
+});
+
+botArmy.on('terminate', function(err,data) {
+    console.log('terminate!');
+});
+
+botArmy.on('checkStatus', function(err,data) {
+    console.log('checkStatus!');
+});
+
+botArmy.on('createLobby',function(err,data){
+    console.log('createLobby!');
+});
+
+botArmy.on('createOffer',function(err,data){
+    console.log('createOffer!');
+});
+
+
 /* Steam logic */
 var onSteamLogOn = function onSteamLogOn(logonResp) {
         if (logonResp.eresult == steam.EResult.OK) {
             steamFriends.setPersonaState(steam.EPersonaState.Busy); // to display your steamClient's status as "Online"
-            steamFriends.setPersonaName("dhdeubot"); // to change its nickname
+            steamFriends.setPersonaName("dota2solo"); // to change its nickname
             util.log("Logged on.");
             Dota2.launch();
             Dota2.on("ready", function() {
@@ -109,7 +144,7 @@ var onSteamLogOn = function onSteamLogOn(logonResp) {
                 //                             "radiant_series_wins": 0,
                 //                             "dire_series_wins": 0,
                 //                             "allchat": true
-                //                             }, 
+                //                             },
                 //                             function(err, body){
                 //                                  console.log(JSON.stringify(body));
                 //                             });
@@ -162,7 +197,7 @@ var onSteamLogOn = function onSteamLogOn(logonResp) {
     };
 
 steamUser.on('updateMachineAuth', function(sentry, callback) {
-    fs.writeFileSync('sentry', sentry.bytes)
+    fs.writeFileSync('sentry', sentry.bytes);
     util.log("sentryfile saved");
     callback({
         sha_file: crypto.createHash('sha1').update(sentry.bytes).digest()
@@ -179,7 +214,7 @@ if (global.config.steam_guard_code) logOnDetails.auth_code = global.config.steam
 
 try {
     var sentry = fs.readFileSync('sentry');
-    if (sentry.length) logOnDetails.sha_sentryfile = sentry;
+    if (sentry.length) logOnDetails.sha_sentryfile = crypto.createHash('sha1').update(sentry).digest();
 } catch (beef) {
     util.log("Cannae load the sentry. " + beef);
 }
