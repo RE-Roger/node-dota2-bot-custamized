@@ -25,27 +25,55 @@ function botArmy() {
 util.inherits(botArmy, EventEmitter);
 
 var botArmy = new botArmy();
+/*
+This is the initialization event, for initialize botsArray
+*/
 botArmy.on('initialize', function(err,data) {
     console.log('initialize!');
 });
 
+/*
+This is the terminate event, for stop all the bots
+*/
 botArmy.on('terminate', function(err,data) {
     console.log('terminate!');
 });
 
+
+/*
+This is the checkStatus event, for checking which bots are running
+*/
 botArmy.on('checkStatus', function(err,data) {
     console.log('checkStatus!');
 });
 
+/*
+This is the createLobby event, order one bot to create a lobby
+*/
 botArmy.on('createLobby',function(err,data){
     console.log('createLobby!');
 });
 
+/*
+This is the createOffer event, order one bot to send an offer to sb
+*/
 botArmy.on('createOffer',function(err,data){
     console.log('createOffer!');
 });
 
+/*
+This is the cancelOffer event, order bot to cancel particular offer
+*/
+botArmy.on('cancelOffer',function(err,data){
+  console.log('cancelOffer');
+});
 
+/*
+This is the cancelLobby event, order bot to leave an lobby, and give up the game
+*/
+botArmy.on('cancelLobby',function(err,data){
+  console.log('cancelLobby');
+})
 /* Steam logic */
 var onSteamLogOn = function onSteamLogOn(logonResp) {
         if (logonResp.eresult == steam.EResult.OK) {
